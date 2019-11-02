@@ -157,12 +157,12 @@ for ($t = $start; $t < $now; $t += 60*60*24) {
             if($gamehtml =~ m/<a href=\"inning\/\"/ ) {
                 $inningdir = "$gamedir/inning";
                 verifyDir($inningdir);
-                $inningurl = "$dayurl/$game/inning/";
-                $response = getWithRetry($inningurl);
+                $inningurl = "$dayurl/$game/inning";
+                $response = getWithRetry("$inningurl/");
                 $inninghtml = $response->content;
 
                 my @files = ();
-                while($inninghtml =~ m/<a href=\"(inning_.*)\"/g ) {
+                while($inninghtml =~ m/<a href=\"(inning_\d+.xml)\"/g ) {
                     push @files, $1;
                 }
 
