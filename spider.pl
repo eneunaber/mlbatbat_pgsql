@@ -88,13 +88,14 @@ for ($t = $start; $t < $now; $t += 60*60*24) {
     verifyDir("$outputdir/year_$year/month_$mon");
     verifyDir("$outputdir/year_$year/month_$mon/day_$mday");
 
-    $dayurl = "$baseurl/year_$year/month_$mon/day_$mday/";
+    $dayurl = "$baseurl/year_$year/month_$mon/day_$mday";
     print "\t$dayurl\n";
 
     $response = getWithRetry($dayurl);
     $html = $response->content;
     my @games = ();
-    while($html =~ m/<a href=\"(gid_\w+\/)\"/g ) {
+    # while($html =~ m/<a href=\"(gid_\w+\/)\"/g ) {
+    while($html =~ m/href=\"day_\d+\/(gid_\w+)\/\"/g ) {
     # while($html =~ m/<a href=\"(gid_\w+_(sur|per|pes|afe|afw)win_1\/)\"/g) {
     # while($html =~ m/<a href=\"(gid_\w+_(kca|tex|sdn|sea)\/)\"/g ) {
         push @games, $1;
@@ -108,7 +109,7 @@ for ($t = $start; $t < $now; $t += 60*60*24) {
         } else {
             print "\t\tfetching game: $game\n";
             verifyDir($gamedir);
-            $gameurl = "$dayurl/$game";
+            $gameurl = "$dayurl/$game/";
             $response = getWithRetry($gameurl);
             $gamehtml = $response->content;
             if($gamehtml =~ m/<a href=\"boxscore\.xml\"/ ) {
